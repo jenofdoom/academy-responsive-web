@@ -1,0 +1,47 @@
+@mixin container-box($colour) {
+  border: 1px solid $colour;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+[v-cloak] { display: none }
+
+body {
+  font-family: $main-font;
+  margin: 0;
+  padding: 0;
+
+  @media screen and (min-width: 960px) {
+    max-width: 918px;
+    margin: 50px auto 20px;
+    @include container-box(#999);
+    box-shadow: 0 0 10px 1px #999;
+  }
+}
+
+h1 {
+  background-color: $main-colour;
+  color: #fff;
+  margin-top: 0;
+  padding: 10px 20px;
+
+  @media screen and (min-width: 960px) {
+    font-size: 42px;
+  }
+}
+
+.content {
+  padding: 0 20px 20px;
+
+  .content-footer  {
+    @include container-box($main-colour);
+    padding: 10px;
+    margin-top: 20px;
+  }
+}
+
+.user-select {
+  font-size: 22px;
+  font-family: $main-font;
+  font-weight: bold;
+}

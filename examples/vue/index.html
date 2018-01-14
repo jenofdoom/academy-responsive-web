@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Movie Vote Webapp</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,400i,700,700i&amp;subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+    <h1>Movies</h1>
+
+    <div class="content">
+
+      <h2 v-cloak>
+        Welcome,
+        <select class="user-select" v-model="user">
+          <option v-for="person in people" v-bind:value="person.id">
+            {{ person.name }}
+          </option>
+        </select>
+      </h2>
+      <p>Here are the movies you can vote on:</p>
+
+      <div class="movie-container">
+        <ul v-cloak>
+          <li v-for="movie in movies">
+            <h3>{{ movie.name }}</h3>
+            <em>{{ movie.length }} minutes</em>
+            <button v-on:click="sendVote(movie.id)">Vote</button>
+            <span class="votes">{{ movie.votes }}</span>
+          </li>
+        </ul>
+      </div>
+      <footer class="content-footer">
+        made by jenofdoom
+      </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

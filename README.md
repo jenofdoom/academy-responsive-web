@@ -22,10 +22,10 @@
       * [Get the API data](#get-the-api-data)
       * [Building the HTML for each movie](#building-the-html-for-each-movie)
    * [Using Vue](#using-vue)
-   * [Commiting your progress](#commiting-your-progress)
+   * [Committing your progress](#committing-your-progress)
 * [Adding some very basic styles](#adding-some-very-basic-styles)
 * [Using media queries to make it responsive](#using-media-queries-to-make-it-responsive)
-   * [Using Chromium's debug toolbar for testing responsive layouts](#using-chromiums-debug-toolbar-for-testing-responsive-layouts)
+   * [Using the developer tools for testing responsive layouts](#using-the-developer-tools-for-testing-responsive-layouts)
 * [Introduction to SCSS](#introduction-to-scss)
 * [A bit more setup](#a-bit-more-setup)
    * [Installing Node.js and npm](#installing-nodejs-and-npm)
@@ -37,8 +37,7 @@
    * [Nesting](#nesting)
    * [Variables](#variables)
    * [Partial imports](#partial-imports)
-   * [Mixins](#mixins)
-   * [Commiting our latest changes](#commiting-our-latest-changes)
+   * [Committing our latest changes](#committing-our-latest-changes)
 * [Showing the vote counts next to each movie](#showing-the-vote-counts-next-to-each-movie)
 * [Voting](#voting)
    * [Select a user](#select-a-user)
@@ -49,10 +48,18 @@
       * [Add a button to vote for each movie](#add-a-button-to-vote-for-each-movie)
       * [Trigger a POST when a vote button is used](#trigger-a-post-when-a-vote-button-is-used)
       * [Check the result](#check-the-result)
-   * [Commiting our latest changes](#commiting-our-latest-changes-1)
+   * [Committing our latest changes](#committing-our-latest-changes-1)
+* [More SCSS](#more-scss)
+   * [Mixins](#mixins)
 * [Other things to try](#other-things-to-try)
 
 ## Preparation
+
+First, open this page in your web browser so you can refer to it as you need:
+
+```
+https://github.com/jenofdoom/academy-responsive-web
+```
 
 ### Add the proxy server
 
@@ -86,8 +93,7 @@ Save and quit `<ESC>:wq<ENTER>`
 #### Reload apache
 
 ```
-service apache2 restart
-exit
+service apache2 reload
 ```
 
 ### Run the python API
@@ -151,17 +157,26 @@ bad points.
 ## If you get stuck
 
 There are example finished versions of the project that you can look at the code
-for, by looking through the code on the branch
-[example](https://github.com/jenofdoom/academy-responsive-web/tree/example)
-on GitHub.
+for, in the examples folder in this directory (or [view them online](https://github.com/jenofdoom/academy-responsive-web/tree/master/css)).
+
+If you think you have an error in your code, use the browser's web development
+tools (F12) to view the error console. If you have a syntax error it will often
+tell you here what is wrong, and even give you a line number of exactly where
+the problem is (if it says main.js:19:5 then the error is in main.js on line 19
+at character 5).
+
+If you're still stuck, be sure to put up your hand and let me know, and I can
+come help you :)
 
 ## Adding a webfont
 
 The default font is ugly. Let's use a webfont instead of a system font.
 
-> Webfonts have some good points and bad points, but most modern websites use at least one webfont.
+> Webfonts have some good points and bad points, but most modern websites use at
+> least one webfont.
 
-We can get a webfont from a few different places, we will use [Google fonts](https://fonts.google.com/) today. All the fonts there are Open Source.
+We can get a webfont from a few different places, we will use [Google
+fonts](https://fonts.google.com/) today. All the fonts there are Open Source.
 
 1. Go to the [Google fonts website](https://fonts.google.com/).
 2. Find a font you like (you can use the filters on the right to help)
@@ -176,12 +191,12 @@ We can get a webfont from a few different places, we will use [Google fonts](htt
 7. If the font you've selected doesn't offer those four types, hit the minus
 next to the font name and find another one that does.
 8. Go back to the 'embed' tab and copy the code snippet in the first grey box.
-9. Paste that line into the `<head>` section above the `main.css` line.
+9. Paste that line into the `<head>` section above the `<link rel="stylesheet"...` line in `index.html`.
 10. In `main.css`, we want to add a CSS rule to start using the new font:
 
 ```
 body {
-  font-family: 'thefontname', sans-serif;
+  font-family: 'Thefontname', sans-serif;
 }
 ```
 
@@ -201,7 +216,9 @@ pull that information from the API you built in the morning.
 In `main.js`, replacing the '// Your code goes in here' comment:
 
 ```
-$.getJSON('/api/')
+var list = '/api/';
+
+$.getJSON(list)
 .done(function(data) {
   console.log(data);
 })
@@ -210,9 +227,14 @@ $.getJSON('/api/')
 });
 ```
 
-In web developer tools, when you reload the page, you should see something like
-`Object { movies=[3]}` in the console tab (the number will be different depending
-on how many movies you have in your DB).
+In web developer tools (hit F12 in your browser to open them), when you reload
+the page, you should see something like `Object { movies=[3]}` in the console
+tab (the number will be different depending on how many movies you have in your
+DB).
+
+> If your API endpoint is broken or contains no movies, I've pre-prepared a  
+> local copy of a set of movies. To use it change the line `var list = '/api/';`
+> to `var list = 'data.json';`
 
 #### Building the HTML for each movie
 
@@ -228,15 +250,16 @@ becomes
 displayMovies(data.movies);
 ```
 
-Now above the `$.getJSON('/api/')` line altogether, we should define our new
+Now above the `$.getJSON(list)` line altogether, we should define our new
 function `displayMovies`, like so:
 
 ```
+var list = '/api/';
 var displayMovies = function(movies) {
   console.log(movies);
 }
 
-$.getJSON('/api/')
+$.getJSON(list)
 ...code continues here
 ```
 
@@ -251,16 +274,16 @@ console.log(movies);
 becomes
 
 ```
-var list = $('<ul />');
+var listContainer = $('<ul />');
 
 movies.forEach(function(movie) {
   var listItem = $('<li />');
 
   listItem.text(movie.name);
-  list.append(listItem);
+  listContainer.append(listItem);
 });
 
-$('.movie-container').append(list);
+$('.movie-container').append(listContainer);
 ```
 
 We create the html elements and then use [.text()](http://api.jquery.com/text/)
@@ -329,7 +352,9 @@ The [v-for](https://vuejs.org/v2/guide/list.html) makes the li element be
 repeated for every movie, and then we build markup to output the individual bits
 of data on the object that we are interested in.
 
-There is one downside, your can sometimes see some of the uncompiled template before it renders with the data. We can fix that though. Add a new rule at the top of `css/main.css`:
+There is one downside, your can sometimes see some of the uncompiled template
+before it renders with the data. We can fix that though. Add a new rule at the
+top of `css/main.css`:
 
 ```
 [v-cloak] { display: none }
@@ -341,10 +366,10 @@ And in `index.html`, add the `v-cloak` directive to the `<ul>`:
 <ul v-cloak>
 ```
 
-### Commiting your progress
+### Committing your progress
 
-Now is a good time to commit, as we got the JavaScript working. In a terminal
-window:
+Now is a good time to commit, as we got the JavaScript working. In a new
+terminal window:
 
 ```
 cd ~/projects/webapp
@@ -356,7 +381,7 @@ git commit -m "List the movies"
 
 ## Adding some very basic styles
 
-We'll come back to the JavaScript functionality later. Let's  start to add a few
+We'll come back to the JavaScript functionality later. Let's start to add a few
 basic styles in `main.css`.
 
 ```
@@ -406,14 +431,15 @@ ul li h3  {
 
 ## Using media queries to make it responsive
 
-One of the key concepts of responsive  design is that we use the same HTML
-markup and the same CSS file to make the website suitable for mobiles, tablets
-and desktop computers. We do need a way in our CSS file to add some rules that
-only apply to one or more of those targets though. We can use [media
+One of the key concepts of responsive design is that we use the same HTML markup
+and the same CSS file to make the website suitable for mobiles, tablets and
+desktop computers. We do need a way in our CSS file to add some rules that only
+apply to one or more of those targets though. We can use [media
 queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries)
 for this.
 
-Let's make the h1 font size bigger on devices with big screens (desktops). In `css/main.css`, underneath the existing rule for the h1:
+Let's make the h1 font size bigger on devices with big screens (desktops). In
+`css/main.css`, underneath the existing rule for the h1:
 
 ```
 h1 {
@@ -460,23 +486,26 @@ each side, and 20px of space on each side.
 
 > Optional: make the h1 font size 26px on devices that have a screen width of less than 400px using a min-width media query
 
-### Using Chromium's debug toolbar for testing responsive layouts
+### Using the developer tools for testing responsive layouts
 
-If you open the site in Chromium  and press `F12`, the developer tools will
-open. They have a useful tool for testing responsive layouts. Press
-`<CONTROL><SHIFT>m` to open the device toolbar. That should give you handles for
-easily resizing the viewport, and a dropdown menu that helps to emulate popular
-mobile devices and tablets so you can see what your site looks like on those.
+If you haven't already got them open, use `F12` in your browser to get the
+developer tools to open. They have a useful tool for testing responsive layouts.
+Press `<CONTROL><SHIFT>m` to open the device toolbar. That should give you
+handles for easily resizing the viewport, and a dropdown menu that helps to
+emulate popular mobile devices and tablets so you can see what your site looks
+like on those.
 
 ## Introduction to SCSS
 
 So far we've just been using regular CSS.  But I want to introduce you to a more
-advanced was of styling your websites. The vast majority of all modern websites
-will be using similar techiniques of some kind, so although it's a bit more
+advanced way of styling your websites. The vast majority of all modern websites
+will be using similar techniques of some kind, so although it's a bit more
 complicated, it's an important part of modern frontend development.
 
 We'll be using [SCSS](http://sass-lang.com/guide) (often referred to as SASS) to
-give CSS the ability to use variables and more. Because we'll be doing things that aren't supported by web browsers, we need to have a step to transform our `.scss` files into regular `.css` that the web browser can use.
+give CSS the ability to use variables and more. Because we'll be doing things
+that aren't supported by web browsers, we need to have a step to transform our
+`.scss` files into regular `.css` that the web browser can use.
 
 ## A bit more setup
 
@@ -489,7 +518,7 @@ browser, and can be used on the command line or for standalone programs.
 In a new terminal window on your laptop:
 
 ```
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
@@ -499,7 +528,7 @@ safer.
 
 1. We got this command from a reputable source, the nodejs.org website itself.
 2. We can have a look first at what will be run by opening
-[https://deb.nodesource.com/setup_6.x](https://deb.nodesource.com/setup_6.x) in
+[https://deb.nodesource.com/setup_8.x](https://deb.nodesource.com/setup_8.x) in
 a web browser.
 
 ### Set up gulp
@@ -511,6 +540,14 @@ cd ~/projects/webapp
 npm install
 ```
 
+npm is following a set of instructions for what to install that has been
+pre-prepared, in `package.json`. 
+
+> In particular we are using a 'build pipeline' tool called Gulp - we won't go
+> into any detail for how this works today, but if you're interested to learn 
+> more have a look at `gulpfile.js` and my
+> [Gulp training](https://github.com/jenofdoom/js-build-pipelines-training)
+
 ### Transfer our existing CSS to SCSS
 
 Make a new folder in `/webapp` by right clicking on it in the Atom sidebar and
@@ -518,17 +555,14 @@ selecting `New Folder`. In the box at the top of the screen, write `scss` and
 press enter.
 
 Now let's move the .css file and change the file extension. We'll use git to do
-the move so it doesn't get confused. In a terminal window:
+the move so it doesn't get confused. In the terminal window you used to install
+npm (so inside `~/projects/webapp`):
 
 ```
-cd ~/projects/webapp
 git mv css/main.css scss/main.scss
 ```
 
 #### Run gulp
-
-Gulp uses a set of instructions that are in a file called `gulpfile.js` to know
-what it's supposed to do.
 
 We can start gulp 'watching' our files for changes and recompiling whenever it
 sees a change by running the following command (in the same terminal window as
@@ -550,7 +584,7 @@ We don't really want to store compiled files like this in our version control.
 We want the `main.scss` file to be our 'source of truth'. So we will tell git
 not to add it.
 
-In Atom, open the `.gitignore` file. We can see that the 'node_modules' folder
+In Atom, open the `.gitignore` file. We can see that the `node_modules` folder
 is already ignored. Let's add the `css` folder. On a new line, add `css/` and
 save the file.
 
@@ -576,7 +610,8 @@ point on as they will get overwritten by the compilation process!
 So far our SCSS is exactly the same as our CSS used to be - we should go through
 it and update it to use some new tricks that SCSS give us. We'll be achieving
 exactly the same thing, but the file should be shorter, easier to read, and
-easier to update in the future.
+easier to update in the future. This time we don't need delete everything in the
+file, we're just going to move a few things around.
 
 ### Nesting
 
@@ -639,7 +674,11 @@ ul {
 
 The `&` means 'the parent selector'.
 
-We also nest our media queries. This is helpful because in makes sure that we group things together - this makes it easier to read the file later. It's not super important in a small file like this one but in a really complicated project it's very useful. Let's update our media queries to take advantage of nesting. Our existing rules:
+We also nest our media queries. This is helpful because in makes sure that we
+group things together - this makes it easier to read the file later. It's not
+super important in a small file like this one but in a really complicated
+project it's very useful. Let's update our media queries to take advantage of
+nesting. Our existing rules:
 
 ```
 body {
@@ -707,7 +746,9 @@ h1 {
 
 Variables in SCSS let us define a value once that we want to use many times in
 our file. We can then change it in one place and have those changes
-automatically flow through to wherever it has been used. For example, right now we use `#333` is a couple of places. Let's replace that with a variable. At the top of the `scss/main.scss` file, add a new line:
+automatically flow through to wherever it has been used. For example, right now
+we use `#333` is a couple of places. Let's replace that with a variable. At the
+top of the `scss/main.scss` file, add a new line:
 
 ```
 $main-colour: #333;
@@ -756,10 +797,19 @@ and would just jam new rules in at the end of the file.
 CSS has always had a way of splitting up files, but it caused a performance
 issue because the browser then had to go get the extra files. SCSS gives us the
 best of both worlds. Let's split up our file now. Right click on the `scss`
-folder in the lefft hand pane in Atom, and select `New File`. In the box at
-the top of the screen, type `_base.scss` and hit `<ENTER>`. Repeat the same action to create another file, `_movie-list.scss`. The underscore is important, it's what tells the SCSS compiler to smush everything into one file rather thatn creating individual ones.
+folder in the left hand pane in Atom, and select `New File`. In the box at the
+top of the screen, type `_base.scss` and hit `<ENTER>`. Repeat the same action
+to create another file, `_movie-list.scss`. The underscore is important, it's
+what tells the SCSS compiler to smush everything into one file rather that
+creating individual ones.
 
-Now we shouldd cut and paste parts of our existing code into their new homes. First, take everything from `[v-cloak] { display: none }` down to and including `.content { padding: 0 20px 20px; }`and cut it (`<CONTROL>x`) and then paste it (`<CONTROL>v`) into `scss/_base.scss`. Save it. Where it used to be in `scss/main.css`, add in a new line `@import "base";`. Now repeat the process for the `ul` bit, putting that into `scss/_movie-list.scss` and replacing it with `@import "movie-list";`.
+Now we should cut and paste parts of our existing code into their new homes.
+First, take everything from `[v-cloak] { display: none }` down to and including
+`.content { padding: 0 20px 20px; }`and cut it (`<CONTROL>x`) and then paste it
+(`<CONTROL>v`) into `scss/_base.scss`. Save it. Where it used to be in
+`scss/main.css`, add in a new line `@import "base";`. Now repeat the process for
+the `ul` bit, putting that into `scss/_movie-list.scss` and replacing it with
+`@import "movie-list";`.
 
 Everything should still work, and `scss/main.scss` should end up looking something like:
 
@@ -781,84 +831,12 @@ looking like the movie list too. We can fix this by making the rules in
 .movie-container ul {
 ```
 
-### Mixins
+SCSS does have a few other tricks up its sleeve (there's a section on mixins a
+bit later on if we have time), but we're covered the majority of the interesting
+things that it does, so it's time to move back to some JavaScript. Let's commit
+our changes first.
 
-Mixins are basically functions that we can use to create bits of CSS that we can reuse throughout our project, even taking variables to customise themselves as needed. In a small project like ours this will be a bit contrived but let's add one anyway.
-
-If we wanted to be easily able to create boxes with a 1px border and curved
-bottom corners, we can set up mixin for that. At the top of
-`scss/_base.scss` we create a mixin and move up the border rules from the
-`body` tag's  media query:
-
-```
-@mixin container-box() {
-  border: 1px solid #999;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-```
-
-Where we took those lines from, we replace them with a call to the mixin:
-
-```
-@media screen and (min-width: 960px) {
-  max-width: 918px;
-  margin: 50px auto 20px;
-  @include container-box();
-  box-shadow: 0 0 10px 1px #999;
-}
-```
-
-Now we can tweak it so the colour the border will be is configurable:
-
-```
-@mixin container-box($colour) {
-  border: 1px solid $colour;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-```
-
-and
-
-```
-@include container-box(#999);
-```
-
-If we need to use the same pattern again, it's easy. Let's add a footer to our
-site and give it the same borders but in a different colour. In `index.html` we
-need to add some more HTML at the bottom of the `.content` div:
-
-```
-<footer class="content-footer">
-  made by yourname
-</footer>
-```
-
-In `scss/_base.scss`, at the bottom, we're going to add to the `.content` rules:
-
-```
-.content {
-  padding: 0 20px 20px;
-
-  .content-footer  {
-    @include container-box($main-colour);
-    padding: 10px;
-    margin-top: 20px;
-  }
-}
-```
-
-If we wanted to do the same thing as a mixin, but we didn't need to pass in
-variables, we can just use
-[@extend](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#extend)
-(which has better performance).
-
-SCSS does have a few other tricks up its sleve, but we're covered the majority
-of the interesting things that it does,  so it's time to move back to some
-JavaScript. Let's commit our changes first.
-
-### Commiting our latest changes
+### Committing our latest changes
 
 In the same terminal window as last time (if you closed it already open another
 and go back to `cd ~/projects/webapp`):
@@ -872,7 +850,10 @@ git commit -m "Better SCSS use"
 
 ## Showing the vote counts next to each movie
 
-First, we need to make the votes API call. In preparation for a later step, we want to do this AFTER we've gotten the movie list. So we can put it inside the `fetchData` function in `js/main.js`, immediately after we get the movie list, like so:
+First, we need to make the votes API call. In preparation for a later step, we
+want to do this AFTER we've gotten the movie list. So we can put it inside the
+`fetchData` function in `js/main.js`, immediately after we get the movie list,
+like so:
 
 ```
 fetchData: function() {
@@ -893,6 +874,10 @@ fetchData: function() {
   });
 }
 ```
+
+> If your API endpoint is broken or contains no vote data, I've pre-prepared a  
+> local copy. To use it change the line `var votes = '/api/votes';`
+> to `var votes = 'data-votes.json';`
 
 Now let's actually do something with that data. We want to match up each vote
 with the movie it belongs to. Replace `console.log(voteJson);` with a loop which
@@ -936,7 +921,26 @@ That way we end up with a data structure that looks like the following:
 }
 ```
 
-Now we can access a particular movie using it's ID, like `movie["1"]`. It become a lot easier for us to add the vote to the movie it belongs to.  Replace `console.log(vote.movie.id);` with the following:
+As we're changing the data structure, we should update our Vue `data`
+initialization block to use the new structure. It used to look like:
+
+```
+data: {
+  movies: []
+},
+```
+
+We should update it so it looks like:
+
+```
+data: {
+  movies: {}
+},
+```
+
+Now we can access a particular movie using its ID, like `movie["1"]`. It become
+a lot easier for us to add the vote to the movie it belongs to.  Replace
+`console.log(vote.movie.id);` with the following:
 
 ```
 var id = vote.movie.id;
@@ -944,6 +948,9 @@ var movie = self.movies[id];
 
 Vue.set(movie, 'votes', movie.votes + 1);
 ```
+
+This uses a special Vue method, [Vue.set](https://vuejs.org/v2/api/#Vue-set), to
+update our movie with an updated votes total.
 
 We can show our new vote count by editing `index.html`:
 
@@ -982,7 +989,7 @@ li {
 
 ### Select a user
 
-Before we can vote, we need a valid ID for a user. Normally, we'd  have some
+Before we can vote, we need a valid ID for a user. Normally, we'd have some
 kind of login system to make sure that only the right person can submit a vote,
 but for our simple app we will just trust that the user is who they say they are
 (NEVER do this in real application, users aren't trustworthy!).
@@ -996,6 +1003,10 @@ variable setup at the beginning:
 ```
 var people = '/api/people';
 ```
+
+> If your API endpoint is broken or contains no people data, I've pre-prepared a  
+> local copy. To use it change the line `var people = '/api/people';`
+> to `var people = 'data-people.json';`
 
 Then, after the other `fetch` calls (this one can happen in any order and
 doesn't need to wait for the movie list to load first):
@@ -1013,17 +1024,18 @@ up an empty array for us to then put that data into:
 
 ```
 data: {
-  movies: [],
+  movies: {},
   people: []
 },
 ```
 
 #### Add a dropdown
 
-Now we have the data we need to give the user some wayy of selecting between the
+Now we have the data we need to give the user some way of selecting between the
 different users. We don't know how many there will be, so a select box seems
-like a good option in case it's quite a long list. In `index.html` let's add a
-new bit above the 'Here are the movies' sentence:
+like a good option (but terribly insecure, as previously mentioned!) in case
+it's quite a long list. In `index.html` let's add a new bit above the 'Here are
+the movies' sentence:
 
 ```
 <h2 v-cloak>
@@ -1048,7 +1060,7 @@ And set up the corresponding Vue data structure in `js/main.js`:
 
 ```
 data: {
-  movies: [],
+  movies: {},
   people: [],
   user: 1
 },
@@ -1124,11 +1136,14 @@ sendVote: function(id) {
 }
 ```
 
+> If your Python API is broken for posting votes, then unfortunately we can't 
+> locally mimic the POST behaviour.
+
 You can see that the URL is built from both the user ID and the movie ID.
 
 #### Check the result
 
-We will either recieve as success response, or a `CONFLICT` response if the user
+We will either receive a success response, or a `CONFLICT` response if the user
 has already voted for that movie and isn't allowed to again. So we need to check
 what the result was. Replace `console.log(response);` with this if statement:
 
@@ -1144,10 +1159,10 @@ If it was successful, we update the vote count for that movie. This is
 illustrating one of the great features of JavaScript in that we don't need to do
 a page reload in order to see the data update.
 
-If it failed, we show an error messsage to the user to let them know what the
+If it failed, we show an error message to the user to let them know what the
 problem was.
 
-### Commiting our latest changes
+### Committing our latest changes
 
 In the same terminal window as last time (if you closed it already open another
 and go back to `cd ~/projects/webapp`):
@@ -1161,7 +1176,85 @@ git commit -a -m "Adding votes"
 now push up your work so far by using the command `git push origin master`.
 
 And that's it! We've successfully built a simple web application, that is
-usuable on both desktops and mobilee devices.
+usable on both desktops and mobile devices.
+
+## More SCSS
+
+### Mixins
+
+Mixins are basically functions that we can use to create bits of CSS that we can
+reuse throughout our project, even taking variables to customise themselves as
+needed. In a small project like ours this will be a bit contrived but let's add
+one anyway.
+
+If we wanted to be easily able to create boxes with a 1px border and curved
+bottom corners, we can set up mixin for that. At the top of
+`scss/_base.scss` we create a mixin and move up the border rules from the
+`body` tag's  media query:
+
+```
+@mixin container-box() {
+  border: 1px solid #999;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+```
+
+Where we took those lines from, we replace them with a call to the mixin:
+
+```
+@media screen and (min-width: 960px) {
+  max-width: 918px;
+  margin: 50px auto 20px;
+  @include container-box();
+  box-shadow: 0 0 10px 1px #999;
+}
+```
+
+Now we can tweak it so the colour the border will be is configurable:
+
+```
+@mixin container-box($colour) {
+  border: 1px solid $colour;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+```
+
+and
+
+```
+@include container-box(#999);
+```
+
+If we need to use the same pattern again, it's easy. Let's add a footer to our
+site and give it the same borders but in a different colour. In `index.html` we
+need to add some more HTML at the bottom of the `.content` div:
+
+```
+<footer class="content-footer">
+  made by yourname
+</footer>
+```
+
+In `scss/_base.scss`, at the bottom, we're going to add to the `.content` rules:
+
+```
+.content {
+  padding: 0 20px 20px;
+
+  .content-footer  {
+    @include container-box($main-colour);
+    padding: 10px;
+    margin-top: 20px;
+  }
+}
+```
+
+If we wanted to do the same thing as a mixin, but we didn't need to pass in
+variables, we can just use
+[@extend](http://sass-lang.com/documentation/file.SASS_REFERENCE.html#extend)
+(which has better performance).
 
 ## Other things to try
 

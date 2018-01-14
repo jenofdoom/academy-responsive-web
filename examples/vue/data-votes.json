@@ -1,0 +1,40 @@
+{
+  "votes": [
+    {
+      "person": {
+        "name": "Mark",
+        "id": 1
+      },
+      "movie": {
+        "name": "Hunger Games: Mockingjay - Part 1",
+        "length": 123,
+        "id": 1
+      },
+      "id": 1
+    },
+    {
+      "person": {
+        "name": "Andrew",
+        "id": 2
+      },
+      "movie": {
+        "name": "Hunger Games: Mockingjay - Part 1",
+        "length": 123,
+        "id": 1
+      },
+      "id": 2
+    },
+    {
+      "person": {
+        "name": "Andrew",
+        "id": 2
+      },
+      "movie": {
+        "name": "The Drop",
+        "length": 106,
+        "id": 2
+      },
+      "id": 3
+    }
+  ]
+}

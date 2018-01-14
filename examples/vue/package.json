@@ -1,0 +1,24 @@
+{
+  "name": "simple-scss-build",
+  "version": "1.0.0",
+  "description": "compile /scss into /css",
+  "repository": "https://github.com/jenofdoom/academy-responsive-web.git",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "./node_modules/.bin/gulp build",
+    "start": "./node_modules/.bin/gulp"
+  },
+  "keywords": [
+    "gulp",
+    "scss"
+  ],
+  "author": "Catalyst",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "gulp": "~3.9.1",
+    "gulp-autoprefixer": "~3.1.1",
+    "gulp-clean-css": "~2.3.2",
+    "gulp-sass": "~3.1.0"
+  }
+}
