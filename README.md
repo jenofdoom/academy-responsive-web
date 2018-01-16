@@ -93,7 +93,7 @@ Save and quit `<ESC>:wq<ENTER>`
 #### Reload apache
 
 ```
-service apache2 reload
+service apache2 restart
 ```
 
 ### Run the python API
@@ -130,8 +130,8 @@ This gives us a few 'starter' files that will be modifying.
 ### Test that it works
 
 You should be able to access the starter files in your web browser at
-`http://yourserveraddress/webapp/` - you should get a page with just the word
-'Movies' and one other sentence on it.
+`http://yourserveraddress/projects/webapp/` - you should get a page with just
+the word 'Movies' and one other sentence on it.
 
 ### Open the project in Atom
 
@@ -369,7 +369,7 @@ And in `index.html`, add the `v-cloak` directive to the `<ul>`:
 ### Committing your progress
 
 Now is a good time to commit, as we got the JavaScript working. In a new
-terminal window:
+terminal window, on your local laptop (not the server):
 
 ```
 cd ~/projects/webapp
@@ -490,10 +490,11 @@ each side, and 20px of space on each side.
 
 If you haven't already got them open, use `F12` in your browser to get the
 developer tools to open. They have a useful tool for testing responsive layouts.
-Press `<CONTROL><SHIFT>m` to open the device toolbar. That should give you
-handles for easily resizing the viewport, and a dropdown menu that helps to
-emulate popular mobile devices and tablets so you can see what your site looks
-like on those.
+Press `<CONTROL><SHIFT>m` to open the device toolbar (if you are using Chrome or
+Chromium you'll need to have the developer tools open before this shortcut
+works). That should give you handles for easily resizing the viewport, and a
+dropdown menu that helps to emulate popular mobile devices and tablets so you
+can see what your site looks like on those.
 
 ## Introduction to SCSS
 
@@ -515,7 +516,7 @@ browser, and can be used on the command line or for standalone programs.
 
 ### Installing Node.js and npm
 
-In a new terminal window on your laptop:
+In a new terminal window on your laptop (not on the server!):
 
 ```
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
@@ -839,7 +840,7 @@ our changes first.
 ### Committing our latest changes
 
 In the same terminal window as last time (if you closed it already open another
-and go back to `cd ~/projects/webapp`):
+and go back to `cd ~/projects/webapp` on you local machine, not the server):
 
 ```
 git status
@@ -962,7 +963,10 @@ We can show our new vote count by editing `index.html`:
 </li>
 ```
 
-Plus we can add some styling for that in `scss/_movie-list.scss`:
+Plus we can add some styling for that in `scss/_movie-list.scss` (note that the
+first part of this styling modifies the existing `li` stuff we already in the
+file, and then adds a new bit for `.votes` that should be nested inside with our
+other nested `li` rules):
 
 ```
 li {
@@ -983,6 +987,8 @@ li {
       top: 25px;
     }
   }
+  
+  ...rest of the existing li nested rules continue here
 ```
 
 ## Voting
@@ -1165,7 +1171,7 @@ problem was.
 ### Committing our latest changes
 
 In the same terminal window as last time (if you closed it already open another
-and go back to `cd ~/projects/webapp`):
+and go back to `cd ~/projects/webapp` on your local machine, not the server):
 
 ```
 git status
