@@ -297,7 +297,8 @@ There are upsides and downside of using jQuery for things like this. For more
 complicated scenarios it could definitely be a bad idea. So let's try an
 alternate method instead. We're going to use [Vue](https://vuejs.org/), which is
 quite similar to other things you might already of heard of like AngularJS or
-React, but a bit more straightforwards.
+React, but a bit more straight-forwards. The Vue library is already included in
+our application via a `<script>` tag at the bottom of `index.html`.
 
 One of the key concepts is that we can keep the HTML display separate from our
 JS file, so it's easier to change the HTML structure for the output.
