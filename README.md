@@ -542,10 +542,10 @@ npm install
 ```
 
 npm is following a set of instructions for what to install that has been
-pre-prepared, in `package.json`. 
+pre-prepared, in `package.json`.
 
 > In particular we are using a 'build pipeline' tool called Gulp - we won't go
-> into any detail for how this works today, but if you're interested to learn 
+> into any detail for how this works today, but if you're interested to learn
 > more have a look at `gulpfile.js` and my
 > [Gulp training](https://github.com/jenofdoom/js-build-pipelines-training)
 
@@ -572,6 +572,10 @@ before):
 ```
 npm start
 ```
+
+> You might notice that I'm using a slightly different command - `npm run testserver`
+> - that's because I don't have a proper backend Python app or
+> Apache set up like you do. Otherwise it's doing all the same stuff.
 
 We want to leave this command and terminal window running whenever we are
 working on the `main.scss` file. When we're done we can quit with `<CONTROL>c`.
@@ -755,9 +759,8 @@ top of the `scss/main.scss` file, add a new line:
 $main-colour: #333;
 ```
 
-Wherever we currently usee `#333`, replace it with `$main-colour`, so for
-example `background-color: #333;` should become `background-color:
-$main-colour;`.
+Wherever we currently use `#333`, replace it with `$main-colour`, so for example
+`background-color: #333;` should become `background-color: $main-colour;`.
 
 Now it's really easy to change that colour in both of those places. Change the
 variable declaration at the top like so:
@@ -797,12 +800,13 @@ and would just jam new rules in at the end of the file.
 
 CSS has always had a way of splitting up files, but it caused a performance
 issue because the browser then had to go get the extra files. SCSS gives us the
-best of both worlds. Let's split up our file now. Right click on the `scss`
-folder in the left hand pane in Atom, and select `New File`. In the box at the
-top of the screen, type `_base.scss` and hit `<ENTER>`. Repeat the same action
-to create another file, `_movie-list.scss`. The underscore is important, it's
-what tells the SCSS compiler to smush everything into one file rather that
-creating individual ones.
+best of both worlds. Let's split up our file now:
+
+Right click on the `scss` folder in the left hand pane in Atom, and select `New
+File`. In the box at the top of the screen, type `_base.scss` and hit `<ENTER>`.
+Repeat the same action to create another file, `_movie-list.scss`. The
+underscore is important, it's what tells the SCSS compiler to smush everything
+into one file rather that creating individual ones.
 
 Now we should cut and paste parts of our existing code into their new homes.
 First, take everything from `[v-cloak] { display: none }` down to and including
@@ -987,7 +991,7 @@ li {
       top: 25px;
     }
   }
-  
+
   ...rest of the existing li nested rules continue here
 ```
 
@@ -1142,7 +1146,7 @@ sendVote: function(id) {
 }
 ```
 
-> If your Python API is broken for posting votes, then unfortunately we can't 
+> If your Python API is broken for posting votes, then unfortunately we can't
 > locally mimic the POST behaviour.
 
 You can see that the URL is built from both the user ID and the movie ID.

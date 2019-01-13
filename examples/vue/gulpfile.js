@@ -1,39 +1,82 @@
-// Include gulp & plugins
+const browsersync = require('browser-sync').create();
 const gulp = require('gulp');
-const nodesass = require('gulp-sass');
-const autoprefixer = require('gulp-autoprefixer');
-const minifyCSS = require('gulp-clean-css');
+const gulpif = require('gulp-if');
+const sass = require('gulp-sass');
+const postcss = require('gulp-postcss');
+const sourcemaps = require('gulp-sourcemaps');
+const autoprefixer = require('autoprefixer');
+const flexfixes = require('postcss-flexbugs-fixes');
+const cssnano = require('cssnano');
 
-// Paths setup
 const PATHS = {
-  'in': {
-    'css': './scss/**/*.scss'
+  'src': {
+    'scss': './scss/**/*.scss'
   },
-  'out': {
+  'dist': {
     'css': './css/'
   }
 }
 
-// Turn sass into css, autoprefix and minify
+const BROWSERSYNCOPTS = {
+  server: { baseDir: './' },
+  files: [
+    '**/*.html',
+    '**/*.js',
+    // you can add other paths to watch for reloads here,
+    // e.g. 'templates/**/*.twig' or 'templates/**/*.ss' or '**/*.php'
+  ]
+}
+let buildFlag = false; // used to determine if minification needed
+
+
 gulp.task('scss', () => {
-  return gulp.src(PATHS.in.css)
-    .pipe(nodesass().on('error', nodesass.logError))
-    .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
-      cascade: false,
-      remove: false
-    }))
-    .pipe(minifyCSS())
-    .pipe(gulp.dest(PATHS.out.css));
+  return gulp.src(PATHS.src.scss)
+    .pipe(sass({
+        includePaths: []
+      })
+      .on('error', sass.logError)
+    )
+    .pipe(sourcemaps.init())
+    .pipe(gulpif(buildFlag,
+      postcss([ // building, run minification
+        autoprefixer({
+          browsers: ['last 2 versions'],
+          cascade: false,
+          remove: false
+        }),
+        flexfixes(),
+        cssnano()
+      ]),
+      postcss([ // not building, don't run minification
+        autoprefixer({
+          browsers: ['last 2 versions'],
+          cascade: false,
+          remove: false
+        }),
+        flexfixes()
+      ])
+    ))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(PATHS.dist.css))
+    .pipe(browsersync.stream({match: '**/*.css'}));
 });
 
-// Watch files for changes
+
+gulp.task('set-build-flag', function(done) {
+  // only set when gulp is called via `build` command
+  buildFlag = true;
+  done();
+});
+
+gulp.task('build', gulp.series('set-build-flag', 'scss'));
+
+gulp.task('testserver', () => {
+  browsersync.init(BROWSERSYNCOPTS);
+  gulp.watch(PATHS.src.scss, gulp.parallel('scss'));
+});
+
 gulp.task('watch', () => {
-  gulp.watch(PATHS.in.css, ['scss']);
+  gulp.watch(PATHS.src.scss, gulp.parallel('scss'));
 });
 
-// Build
-gulp.task('build', ['scss']);
-
-// Default task (build before watching)
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', gulp.series('scss', 'watch'));
