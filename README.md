@@ -58,7 +58,7 @@
 First, open this page in your web browser so you can refer to it as you need:
 
 ```
-https://github.com/jenofdoom/academy-responsive-web
+https://github.com/catalyst/academy-responsive-web
 ```
 
 ### Add the proxy server
@@ -116,13 +116,13 @@ You should be able to access the api in your web browser at
 In a new tab in your terminal (on your laptop):
 
 > Optional: log in to your GitHub account, visit
-[https://github.com/jenofdoom/academy-responsive-web](https://github.com/jenofdoom/academy-responsive-web)
+[https://github.com/catalyst/academy-responsive-web](https://github.com/catalyst/academy-responsive-web)
 and hit the fork button in the top right hand corner. Then in the git clone
 command below, replace 'jenofdoom' with your user name.
 
 ```
 cd ~/projects
-git clone https://github.com/jenofdoom/academy-responsive-web.git webapp
+git clone https://github.com/catalyst/academy-responsive-web.git webapp
 ```
 
 This gives us a few 'starter' files that will be modifying.
@@ -179,29 +179,30 @@ We can get a webfont from a few different places, we will use [Google
 fonts](https://fonts.google.com/) today. All the fonts there are Open Source.
 
 1. Go to the [Google fonts website](https://fonts.google.com/).
-2. Find a font you like (you can use the filters on the right to help)
-3. Click the plus icon next to the one you like
-4. Click on the '1 family selected' at the bottom of the screen
-5. Go into the 'customize' tab
-6. We want to select four different styles:
+2. Find a font you like and click on it (you can use the filters on the right to help)
+3. Select required styles and click "+ Select this style"
+We want to select four different styles:
   * regular 400
   * regular 400 italic
   * bold 700
   * bold 700 italic
-7. If the font you've selected doesn't offer those four types, hit the minus
+4. If the font you've selected doesn't offer those four types, hit the minus
 next to the font name and find another one that does.
-8. Go back to the 'embed' tab and copy the code snippet in the first grey box.
-9. Paste that line into the `<head>` section above the `<link rel="stylesheet"...` line in `index.html`.
-10. In `main.css`, we want to add a CSS rule to start using the new font:
+
+5. Click on a top right icon on Google Fonts website to bring side menu with selected styles
+6. In "Use on the web" section copy `<link rel="preconnect" ...> snippet
+7. Paste that line into the `<head>` section above the `<link rel="stylesheet"...` line in `index.html`.
+8. Go back to Google Fonts website and copy snippet with 'font-family' rule
+9. In `main.css`, we want to add a CSS rule to start using the new font:
 
 ```
 body {
-  font-family: 'Thefontname', sans-serif;
+  ... snippet with font-family rule ...
 }
 ```
 
-> Optional: Add a second webfont so it says '2 Families Selected' on the Google
-fonts website, and use that second font just for h1, h2 and h3 tags so we have a
+> Optional: Add a second webfont on the Google
+Fonts website, and use that second font just for h1, h2 and h3 tags so we have a
 different font for the body text and the major headers.
 
 ## Listing the movies using JS
@@ -296,7 +297,7 @@ and [.append()](http://api.jquery.com/append/) to add the movie data.
 There are upsides and downside of using jQuery for things like this. For more
 complicated scenarios it could definitely be a bad idea. So let's try an
 alternate method instead. We're going to use [Vue](https://vuejs.org/), which is
-quite similar to other things you might already of heard of like AngularJS or
+quite similar to other things you might already of heard of like Angular or
 React, but a bit more straight-forwards. The Vue library is already included in
 our application via a `<script>` tag at the bottom of `index.html`.
 
@@ -520,7 +521,7 @@ browser, and can be used on the command line or for standalone programs.
 In a new terminal window on your laptop (not on the server!):
 
 ```
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs
 ```
 
@@ -530,7 +531,7 @@ safer.
 
 1. We got this command from a reputable source, the nodejs.org website itself.
 2. We can have a look first at what will be run by opening
-[https://deb.nodesource.com/setup_8.x](https://deb.nodesource.com/setup_8.x) in
+[https://deb.nodesource.com/setup_14.x](https://deb.nodesource.com/setup_14.x) in
 a web browser.
 
 ### Set up gulp
