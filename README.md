@@ -1,5 +1,7 @@
 # Open Source Academy - Responsive Web
 
+## You probably want to go [look here](https://github.com/catalyst/academy-responsive-web) instead :)
+
 ## Contents
 
 * [Preparation](#preparation)
